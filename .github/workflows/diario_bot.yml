@@ -1,0 +1,47 @@
+name: Monitor Diario Oficial
+
+on:
+  schedule:
+    # Roda a cada hora, entre 8h e 18h (BRT), de Segunda a Sexta
+    - cron: '0 11-21 * * 1-5'
+  workflow_dispatch: # Permite rodar manualmente clicando num botão
+
+jobs:
+  check-and-post:
+    runs-on: ubuntu-latest
+    
+    # PERMISSÃO CRÍTICA: Permite que o bot faça commit no repositório
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Executar Script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+        run: python main.py
+
+      - name: Salvar estado (Commit)
+        run: |
+          git config --global user.name 'DiarioBot'
+          git config --global user.email 'bot@noreply.github.com'
+          
+          # Verifica se houve alteração no arquivo de estado
+          if [[ -n $(git status -s last_processed.txt) ]]; then
+            git add last_processed.txt
+            git commit -m "🤖 Update: Novo diário processado"
+            git push
+          else
+            echo "Nenhuma mudança para commitar."
+          fi
