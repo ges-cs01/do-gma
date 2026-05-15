@@ -1,6 +1,6 @@
 # do-gma
 
-Bot em Python para monitorar o Diário Oficial de Guararema e publicar automaticamente no Telegram.
+Bot em Python para monitorar o Diário Oficial de Guararema e publicar automaticamente no [Telegram](https://t.me/diariooficialgma).
 
 ## O que o projeto faz
 - Acessa a página oficial do Diário Oficial de Guararema
