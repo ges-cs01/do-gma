@@ -2,7 +2,7 @@ name: Monitor Diario Oficial
 
 on:
   schedule:
-    # Roda de hora em hora, das 8h às 18h (Horário aprox. Brasil), Seg-Sex
+    # Roda de hora em hora, das 5h às 17h (Horário aprox. Brasil utc-3), Seg-Sex
     - cron: '0 08-20 * * 1-5'
   workflow_dispatch: # Botão para rodar manual
 
